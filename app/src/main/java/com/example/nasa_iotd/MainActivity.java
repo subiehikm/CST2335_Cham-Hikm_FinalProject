@@ -10,12 +10,14 @@ import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ProgressBar progressBar = findViewById(R.id.MainLoading);
+        progressBar = findViewById(R.id.MainLoading);
         Button startButton = findViewById(R.id.startBtn);
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
                         new Intent(MainActivity.this, com.example.nasa_iotd.DisplayImage.class)
                 );
             }
-
 
         });
 
