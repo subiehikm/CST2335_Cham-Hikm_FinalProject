@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,20 +26,37 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.MainLoading);
         Button startButton = findViewById(R.id.startBtn);
+        Button searchButton = findViewById(R.id.homepage_search_button);
         // make visible the progress bar
         progressBar.setVisibility(View.VISIBLE);
 
         // TODO: Make an API Call to NASA and inform user when the JSON METADATA has arrived
-        startButton.setVisibility(View.GONE);
+        searchButton.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.INVISIBLE);
 
         GetDateQuery req = new GetDateQuery(startButton, AppDatabase.getDatabase(getApplicationContext()));
-        req.execute("2020-12-11");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        String today = sdf.format(c.getTime());
+        req.execute(today);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(
+                        new Intent(MainActivity.this, com.example.nasa_iotd.ImageList.class)
+                );
+            }
+
+        });
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // make visible the progress bar
                 progressBar.setVisibility(View.GONE);
+
+                // TODO: Maybe create a bundle with the UID of the current date's entry. But we do know it can be searched for (or the button wouldn't be visible)
 
                 startActivity(
                         new Intent(MainActivity.this, com.example.nasa_iotd.DisplayImage.class)

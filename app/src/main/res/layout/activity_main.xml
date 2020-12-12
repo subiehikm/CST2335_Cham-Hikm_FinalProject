@@ -26,6 +26,18 @@
         android:layout_marginTop="50dp"
         android:textColor="@android:color/holo_blue_dark"
         android:text="@string/startHere" />
+
+    <Button
+        android:id="@+id/homepage_search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startBtn"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="@string/archive_search"/>
+
     <Button
         android:id="@+id/startBtn"
         android:layout_width="wrap_content"
@@ -36,6 +48,7 @@
         android:layout_marginTop="50dp"
         android:textColor="@android:color/holo_blue_dark"
         android:text="@string/IOTD"/>
+
     <ProgressBar
         android:id="@+id/MainLoading"
         style="?android:attr/progressBarStyleLarge"

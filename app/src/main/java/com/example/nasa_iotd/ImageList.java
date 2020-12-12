@@ -7,14 +7,38 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class ImageList extends AppCompatActivity {}
+import java.util.List;
+
+public class ImageList extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_image_list);
+
+        // TODO: Populate the list using the entries from the database
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        List<DateEntry> entries = db.dateentryDao().getAllDateEntries();
+
+        // TODO: Create a list adaptor and make the entries list available in the view
+        ListView lv = findViewById(R.id.theListView);
+        ArrayAdapter<DateEntry> adapter = new ArrayAdapter<DateEntry>(this, android.R.layout.simple_list_item_1, entries.toArray(new DateEntry[0]));
+        lv.setAdapter(adapter);
+
+        // Click Adaptor for the list so you can go to DisplayImage with the UID stored in a bundle
+            // In order to display that image.
+    }
+
+}
 
     //Button button;
 

@@ -3,7 +3,8 @@
     <string name="welcome">Welcome to the NASA Image of the Day App</string>
     <string name="startHere">Let\'s get started. Press the button below!</string>
     <string name="IOTD">Image of the Day!</string>
+    <string name="archive_search">Past Images</string>
     <string name="search_button">SEARCH</string>
-    <string name="hidden_search">Search for... (e.g \"Orion\")</string>
+    <string name="hidden_search">Search Date (YYYY-MM-dd)</string>
     <string name="picture_title">A picture title</string>
 </resources>

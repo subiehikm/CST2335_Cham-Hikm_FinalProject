@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -28,6 +29,8 @@ import android.widget.VideoView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DisplayImage extends AppCompatActivity {
 
@@ -38,6 +41,8 @@ public class DisplayImage extends AppCompatActivity {
     private ImageView mImageView;
     private ScaleGestureDetector scaleGestureDetector;
     private float mScaleFactor = 1.0f;
+
+    DateEntry entry;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -54,34 +59,36 @@ public class DisplayImage extends AppCompatActivity {
         // getting Intent Extras
         Bundle bundle = getIntent().getExtras();
 
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
         if (bundle != null) {
-            media_type = bundle.getString("media_type");
-            url = bundle.getString("url");
+            long dateId = bundle.getLong("dateId");
+            entry = db.dateentryDao().getDateEntry(dateId);
         } else {
-            AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
-            DateEntry entry = db.dateentryDao().forDate("2020-12-11");
-            media_type = entry.media_type;
-            url = entry.url;
+            Log.w("FALLBACK", "Using fallback strategy of today's date. This should be provided in the bundle as a UID");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            String today = sdf.format(c.getTime());
+            entry = db.dateentryDao().forDate(today);
         }
 
         // if media type is video then play video
-        if (media_type.equals("video")) {
+        if (entry.media_type.equals("video")) {
 //            mVideoView.setVisibility(View.VISIBLE);
             mImageView.setVisibility(View.GONE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//            playVideo(url);
+//            playVideo(entry.url);
 
             // if media type is image view image
-        } else if (media_type.equals("image")) {
+        } else if (entry.media_type.equals("image")) {
 //            mVideoView.setVisibility(View.GONE);
             mImageView.setVisibility(View.VISIBLE);
 //            dialog.setMessage("Please wait...");
 //            dialog.setIcon(R.mipmap.ic_launcher);
 //            dialog.setCanceledOnTouchOutside(false);
 //            dialog.show();
-            new ConvertURLImageToBitmap(mImageView).execute(url);
-            scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+            new ConvertURLImageToBitmap(mImageView).execute(entry.url);
+//            scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         }
     }

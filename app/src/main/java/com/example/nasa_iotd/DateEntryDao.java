@@ -22,6 +22,9 @@ public interface DateEntryDao {
     @Query("select * from dates")
     public List<DateEntry> getAllDateEntries();
 
+    @Query("select * from dates where uid = :dateId")
+    public DateEntry getDateEntry(long dateId);
+
 //    @Query("select * from dates where id = :userId")
 //    public List<DateEntry> getDateEntry(long userId);
 
