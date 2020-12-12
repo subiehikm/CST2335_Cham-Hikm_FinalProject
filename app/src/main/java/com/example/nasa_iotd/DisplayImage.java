@@ -38,7 +38,6 @@ public class DisplayImage extends AppCompatActivity {
     private ImageView mImageView;
     private ScaleGestureDetector scaleGestureDetector;
     private float mScaleFactor = 1.0f;
-    private ImageView imageView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -49,8 +48,8 @@ public class DisplayImage extends AppCompatActivity {
 
         // Initializing View
         mImageView = findViewById(R.id.activity_display_image_view);
+//        mVideoView = findViewById(R.id.a);
         progressBar = findViewById(R.id.activity_display_image_progressbar);
-
 
         // getting Intent Extras
         Bundle bundle = getIntent().getExtras();
@@ -59,25 +58,28 @@ public class DisplayImage extends AppCompatActivity {
             media_type = bundle.getString("media_type");
             url = bundle.getString("url");
         } else {
-            Toast.makeText(this, "Empty Bitmap", Toast.LENGTH_SHORT).show();
+            AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+            DateEntry entry = db.dateentryDao().forDate("2020-12-11");
+            media_type = entry.media_type;
+            url = entry.url;
         }
 
         // if media type is video then play video
         if (media_type.equals("video")) {
-            mVideoView.setVisibility(View.VISIBLE);
+//            mVideoView.setVisibility(View.VISIBLE);
             mImageView.setVisibility(View.GONE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            playVideo(url);
+//            playVideo(url);
 
             // if media type is image view image
         } else if (media_type.equals("image")) {
-            mVideoView.setVisibility(View.GONE);
+//            mVideoView.setVisibility(View.GONE);
             mImageView.setVisibility(View.VISIBLE);
-            dialog.setMessage("Please wait...");
-            dialog.setIcon(R.mipmap.ic_launcher);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+//            dialog.setMessage("Please wait...");
+//            dialog.setIcon(R.mipmap.ic_launcher);
+//            dialog.setCanceledOnTouchOutside(false);
+//            dialog.show();
             new ConvertURLImageToBitmap(mImageView).execute(url);
             scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
@@ -156,8 +158,8 @@ public class DisplayImage extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             imageView.setImageBitmap(bitmap);
-            dialog.dismiss();
-            dialog.hide();
+//            dialog.dismiss();
+//            dialog.hide();
         }
     }
 
