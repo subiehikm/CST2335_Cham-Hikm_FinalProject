@@ -30,16 +30,17 @@ public class MainActivity extends AppCompatActivity {
         // make visible the progress bar
         progressBar.setVisibility(View.VISIBLE);
 
-        // TODO: Make an API Call to NASA and inform user when the JSON METADATA has arrived
+        //  Make an API Call to NASA and inform user when the JSON METADATA has arrived
         searchButton.setVisibility(View.VISIBLE);
         startButton.setVisibility(View.INVISIBLE);
 
+        //NOTE: I just had the program working and I misclicked an unfamiliar function and I have no idea why this is an error now.
         GetDateQuery req = new GetDateQuery(startButton, AppDatabase.getDatabase(getApplicationContext()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         String today = sdf.format(c.getTime());
         req.execute(today);
-//        req.execute("2020-08-09");
+
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
