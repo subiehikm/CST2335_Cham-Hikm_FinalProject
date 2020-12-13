@@ -6,8 +6,12 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "dates", indices={@Index(value={"date"}, unique = true)})
+@Entity(tableName = "dates"/*, indices={@Index(value={"date"}, unique = true)}*/)
 public class DateEntry {
+
+    public String toString(){
+        return date + ": " + title;
+    }
 
     @PrimaryKey
     public int uid;

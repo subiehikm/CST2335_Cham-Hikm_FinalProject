@@ -7,4 +7,5 @@
     <string name="hidden_search">Rechercher... (e.g \"Orion\")</string>
     <string name="search_button">Rechercher</string>
     <string name="picture_title">A picture title</string>
+    <string name="archive_search">Images passées</string>
 </resources>

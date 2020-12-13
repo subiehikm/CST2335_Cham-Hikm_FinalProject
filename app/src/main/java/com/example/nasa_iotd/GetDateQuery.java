@@ -1,23 +1,15 @@
 package com.example.nasa_iotd;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,11 +20,13 @@ import java.net.URL;
 public class GetDateQuery extends AsyncTask<String, Integer, String> {
 
     AppDatabase db;
-
+    Context context;
     View toShow;
-    public GetDateQuery(View show_when_finished, AppDatabase database){
+
+    public GetDateQuery(View show_when_finished, AppDatabase database, Context context) {
         db = database;
         toShow = show_when_finished;
+        context = context;
     }
 
     //Bitmap weatherImage = null;
@@ -45,6 +39,8 @@ public class GetDateQuery extends AsyncTask<String, Integer, String> {
         URL url;
         HttpURLConnection urlConnection;
         InputStream response;
+
+        int recursion_depth = 3;
         try {
             //create a URL object of what server to contact:
             Log.d("URL_CALL", base_url.concat(date));
@@ -77,7 +73,7 @@ public class GetDateQuery extends AsyncTask<String, Integer, String> {
             entry.media_type = json.getString("media_type");
             entry.service_version = json.getString("service_version");
             entry.title = json.getString("title");
-            db.dateentryDao().addDateEntry(entry);
+            db.dateEntryDao().addDateEntry(entry);
 
             // Maybe trigger image download
             publishProgress(25);
@@ -86,6 +82,9 @@ public class GetDateQuery extends AsyncTask<String, Integer, String> {
         } catch (IOException e) {
             // Really ugly hack; just try again - might be a transient failure.
             Log.w("RECURSION","Warning Infinite Recursion Possible.");
+
+            recursion_depth -= 1;
+            if (recursion_depth <= 0)
             return doInBackground(args);
         } catch (JSONException e) {
             e.printStackTrace();

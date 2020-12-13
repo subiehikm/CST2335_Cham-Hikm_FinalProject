@@ -23,7 +23,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.io.ByteArrayOutputStream;
@@ -53,7 +52,7 @@ public class DisplayImage extends AppCompatActivity {
 
         // Initializing View
         mImageView = findViewById(R.id.activity_display_image_view);
-//        mVideoView = findViewById(R.id.a);
+
         progressBar = findViewById(R.id.activity_display_image_progressbar);
 
         // getting Intent Extras
@@ -62,13 +61,22 @@ public class DisplayImage extends AppCompatActivity {
         AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
         if (bundle != null) {
             long dateId = bundle.getLong("dateId");
-            entry = db.dateentryDao().getDateEntry(dateId);
+            entry = db.dateEntryDao().getDateEntry(dateId);
         } else {
             Log.w("FALLBACK", "Using fallback strategy of today's date. This should be provided in the bundle as a UID");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar c = Calendar.getInstance();
             String today = sdf.format(c.getTime());
-            entry = db.dateentryDao().forDate(today);
+            entry = db.dateEntryDao().forDate(today);
+        }
+
+        if (entry == null){
+            Log.e("NULLREF", "Unable to find entry for Date");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            String today = sdf.format(c.getTime());
+            entry = db.dateEntryDao().forDate(today);
+
         }
 
         // if media type is video then play video
@@ -149,6 +157,7 @@ public class DisplayImage extends AppCompatActivity {
         protected Bitmap doInBackground(String... url) {
             String stringUrl = url[0];
             bitmap = null;
+            progressBar.setVisibility(View.INVISIBLE);
             InputStream inputStream;
             try {
                 inputStream = new java.net.URL(stringUrl).openStream();
@@ -165,6 +174,7 @@ public class DisplayImage extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             imageView.setImageBitmap(bitmap);
+            progressBar.setVisibility(View.INVISIBLE);
 //            dialog.dismiss();
 //            dialog.hide();
         }

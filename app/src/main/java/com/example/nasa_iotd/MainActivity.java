@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         String today = sdf.format(c.getTime());
         req.execute(today);
+//        req.execute("2020-08-09");
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
