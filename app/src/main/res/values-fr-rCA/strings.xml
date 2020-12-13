@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NASA_IOTD</string>
+    <string name="welcome">Bienvenue sur l\'application Image of the Day de la NASA</string>
+    <string name="startHere">Commençons! Appuyez sur le bouton ci-dessous.</string>
+    <string name="IOTD">Image du jour!</string>
+    <string name="hidden_search">Rechercher... (e.g \"Orion\")</string>
+    <string name="search_button">Rechercher</string>
+    <string name="picture_title">A picture title</string>
+    <string name="archive_search">Images passées</string>
+</resources>
